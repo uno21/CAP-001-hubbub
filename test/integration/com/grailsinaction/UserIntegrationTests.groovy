@@ -53,17 +53,17 @@ class UserIntegrationTests extends GroovyTestCase {
 		
 		def errors = user.errors
 		
-		assertEquals "size.toosmall",
-			errors.getFieldError("password").code
-		assertEquals "tiny",
-			errors.getFieldError("password").rejectedValue
+		assertEquals 'size.toosmall',
+			errors.getFieldError('password').code
+		assertEquals 'tiny',
+			errors.getFieldError('password').rejectedValue
 		
-		assertEquals "url.invalid",
-			errors.getFieldError("homepage").code
-		assertEquals "not-a-url",
-			errors.getFieldError("homepage").rejectedValue
+		assertEquals 'url.invalid',
+			errors.getFieldError('homepage').code
+		assertEquals 'not-a-url',
+			errors.getFieldError('homepage').rejectedValue
 		
-		assertNull errors.getFieldError("userId")
+		assertNull errors.getFieldError('userId')
 		
 	}
 	
@@ -75,11 +75,26 @@ class UserIntegrationTests extends GroovyTestCase {
 		assertTrue(user.hasErrors())
 		assertNull user.save()
 		
-		user.password = "fistfist"
-		user.homepage = "http://www.chucknorrisfacts.com"
+		user.password = 'fistfist'
+		user.homepage = 'http://www.chucknorrisfacts.com'
 		assertTrue(user.validate())
 		assertFalse(user.hasErrors())
 		assertNotNull user.save()
+		
+	}
+	
+	void testUserIdMatchPasswordError() {
+		
+		def user = new User(userId: 'chucky',
+			password: 'chucky', homepage: 'http://www.chucknorrisfacts.com')
+		assertFalse(user.validate())
+		assertTrue(user.hasErrors())
+		
+		def errors = user.errors
+		assertEquals 'validator.invalid',
+			errors.getFieldError('password').code
+		assertEquals 'chucky',
+			errors.getFieldError('password').rejectedValue
 		
 	}
 	
