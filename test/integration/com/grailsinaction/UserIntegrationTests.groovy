@@ -44,6 +44,45 @@ class UserIntegrationTests extends GroovyTestCase {
 		
 	}
 	
+	void testEvilTest() {
+	
+		def user = new User(userId: 'chuck_norris',
+			password: 'tiny', homepage: 'not-a-url')
+		assertFalse user.validate()
+		assertTrue user.hasErrors()
+		
+		def errors = user.errors
+		
+		assertEquals "size.toosmall",
+			errors.getFieldError("password").code
+		assertEquals "tiny",
+			errors.getFieldError("password").rejectedValue
+		
+		assertEquals "url.invalid",
+			errors.getFieldError("homepage").code
+		assertEquals "not-a-url",
+			errors.getFieldError("homepage").rejectedValue
+		
+		assertNull errors.getFieldError("userId")
+		
+	}
+	
+	void testEvilSaveCorrected() {
+		
+		def user = new User(userId: 'chuck_norris',
+			password: 'tiny', homepage: 'not-a-url')
+		assertFalse(user.validate())
+		assertTrue(user.hasErrors())
+		assertNull user.save()
+		
+		user.password = "fistfist"
+		user.homepage = "http://www.chucknorrisfacts.com"
+		assertTrue(user.validate())
+		assertFalse(user.hasErrors())
+		assertNotNull user.save()
+		
+	}
+	
 	
 
 }
