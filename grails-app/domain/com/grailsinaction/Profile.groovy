@@ -2,8 +2,6 @@ package com.grailsinaction
 
 class Profile {
 	
-	static belongsTo = User
-	
 	byte[] photo
 	String fullName
 	String bio
@@ -24,4 +22,10 @@ class Profile {
 		jabberAddress(email: true, nullable: true)
 	}
 		
+	
+	String toString() {
+		"Profile for ${fullName} (${id})" 
+	}
+
+	static belongsTo = User
 }
