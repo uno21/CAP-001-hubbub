@@ -11,4 +11,30 @@ class UserController {
 		def users = User.findAllByUserIdLike("%${params.userId}%")
 		return [ users: users, term: params.userId ]	
 	}
+	
+	def advSearch = {
+	}
+	
+	def advResults = {
+		def profileProps =
+			Profile.metaClass.properties*.name
+		
+		params.toMapString()	
+		
+		def profiles = Profile.withCriteria {
+			"${params.queryType}" {
+				
+				params.each { field, value ->
+					
+					if (profileProps.grep(field) && value ) {
+						ilike(field,value)
+					}
+				}
+			}
+			
+		}	
+		
+		[ profiles: profiles]	
+		
+	}
 }
