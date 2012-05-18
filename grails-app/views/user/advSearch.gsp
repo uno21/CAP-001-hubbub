@@ -22,7 +22,7 @@
 				<g:textField name="homepage" />
 			</div>
 			Query Type:
-			<g:radio name="queryType" value="and"/>AND
+			<g:radio name="queryType" value="and" checked="checked"/>AND
 			<g:radio name="queryType" value="or"/>OR
 			<g:radio name="queryType" value="not"/>NOT
 			<div>

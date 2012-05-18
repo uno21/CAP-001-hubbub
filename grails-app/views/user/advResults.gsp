@@ -11,7 +11,7 @@
 		</p>
 		<ul>
 			<g:each var="profile" in="${profiles}">
-				<li>${profile.fullName}</li>
+				<li><g:link controller="user" action="profile" id="${profile.id}">${profile.fullName}</g:link></li>
 			</g:each>
 		</ul>
 		

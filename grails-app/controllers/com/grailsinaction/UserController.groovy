@@ -51,4 +51,9 @@ class UserController {
 		}
 		
 	}
+	
+	def profile = {
+		def profile = Profile.findById(params.id)	
+		[ profile : profile]
+	}
 }
