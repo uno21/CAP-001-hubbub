@@ -35,5 +35,16 @@ class ImageController {
 			response.sendError(404)
 		}		
 	}
+	
+	def tiny = {
+		def user = User.findByUserId(params.id)
+		if (user?.profile?.photo) {
+			response.setContentLength(user.profile.photo.length)
+			response.outputStream.write(user.profile.photo)
+		} else { 
+			response.sendError(404)
+		}
+			
+	}
 
 }

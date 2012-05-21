@@ -53,7 +53,9 @@ class UserController {
 	}
 	
 	def profile = {
-		def profile = Profile.findById(params.id)	
-		[ profile : profile]
+		def profile = Profile.findById(params.id)
+		def user = User.findByProfile(profile)
+		[ profile : profile, following : user.following]
 	}
+	
 }

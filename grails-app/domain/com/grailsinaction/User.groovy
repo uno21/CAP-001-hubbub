@@ -20,6 +20,7 @@ class User {
 	static hasMany = [ posts : Post, tags : Tag, following : User ]
 	
 	static mapping = {
+		following lazy:false
 		profile  lazy:false
 		posts sort:'dateCreated'
 	}
