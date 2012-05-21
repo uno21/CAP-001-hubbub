@@ -3,11 +3,11 @@ package com.grailsinaction
 class PostController {
 	
 	def postService
-    def scaffold = true
+  //  def scaffold = true
 	
 	def index = {
 		if (!params.id) 
-			params.id = "eze.giorgi"	
+			params.id = "ale09"	
 		redirect(action: 'timeline',params: params)		
 	}
 	
@@ -16,15 +16,18 @@ class PostController {
 		[ user : user ]
 	}
 	
-	def addPost = {
-		try {
+	def add_Post = {
+	
 			def newPost = 
 				postService.createPost(params.id, 
 								params.content)
 			flash.message = "Added new post: ${newPost.content}"	
-		} catch (PostException pe) {
-			flash.message = pe.message
-		}
+		
 		redirect(action: 'timeline', id: params.id)
+	}
+	
+	def paginatePost = {
+		def posts = User.fidByUserId(params.id).posts
+		[post: posts, postCount:posts.count]
 	}
 }

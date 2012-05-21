@@ -19,9 +19,10 @@
 		</g:if>
 			
 		<p>
-			<g:form action="addPost" id="${params.id}">
+			<g:form action="add_Post">
 				<g:textArea id='postContent' name="content"
 					rows="3" cols="50"/><br/>
+				<g:hiddenField name="id" value="${params.id}"/>		
 				<g:submitButton name="post" value="Post"/>
 			</g:form>
 		</p>

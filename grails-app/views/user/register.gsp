@@ -5,48 +5,60 @@
 	</head>
 	<body>
 
-		<h1>Register New User</h1>
-		
-		<g:hasErrors>
-			<div class="errors">
-				<g:renderErrors bean="${user}" as="list" />
-			</div>
-		</g:hasErrors>
-	
-		<g:form action="register">
-			<dl>
-				<dt>User Id</dt>
+		<h1>Register New User (Complete - Chapter 6)</h1>
+			<g:uploadForm>
+				<dt>User Id: </dt>
+				<dd><g:textField name="userId" /></dd>
+				
+				<dt>Password:</dt>
+				<dd><g:passwordField name="password" /></dd>
+				<dt>(repeat)</dt>
+				<dd><g:passwordField name="passwordRepeat" /></dd>
+				<dt>Country:</dt>
+				<dd><g:countrySelect name="country"
+				noSelection="['':'Choose your country...']"/>
+				
+				<dt>Photo:</dt>
+				<dd><input type="file" name="photo"/></dd>
+				
+				<dt>Timezone:</dt>
+				<dd><g:timeZoneSelect name="timezone"/></dd>
+				<dt>Who introduced you to Hubbub?</dt>
 				<dd>
-					<g:textField name="userId"
-					value="${user?.userId}"/>
+				<g:select name="referrer"
+					from="${com.grailsinaction.Profile.list()}"
+					optionKey="id"
+					optionValue="fullName"
+					noSelection="${['null':'Please Choose...']}" />
+				
 				</dd>
-				<dt>Password</dt>
+				
+				<dt>Spam me forever:</dt>
 				<dd>
-					<g:passwordField name="password"
-					value="${user?.password}"/>
+					<g:checkBox name="spamMe" checked="true"/>
 				</dd>
-				<dt>Full Name</dt>
+				
+				<dt>Email Format:</dt>
 				<dd>
-					<g:textField name="profile.fullName"
-					value="${user?.profile?.fullName}"/>
+				<g:radioGroup name="emailFormat"
+					labels="['Plain','HTML']"
+					values="['P', 'H']"
+					value="H">
+					${it.label} ${it.radio}
+				</g:radioGroup>
 				</dd>
-				<dt>Bio</dt>
+				
+				<dt>
+					<g:actionSubmit value="Register"/>
+				</dt>	
 				<dd>
-					<g:textArea name="profile.bio"
-					value="${user?.profile?.bio}"/>
+					<g:actionSubmit value="Cancel" action="cancelRegister" />
 				</dd>
-				<dt>Email</dt>
-				<dd>
-					<g:textField name="profile.email" value="${user?.profile?.email}"/>
-					<g:hasErrors bean="${user}" field="profile.email">
-						<g:eachError bean="${user}" field="profile.email">
-							<p style="color:red;"><g:message error="${it}"/></p>
-						</g:eachError>
-					</g:hasErrors>
-				</dd>
-				<dt><g:submitButton name="register" value="Register"/></dt>
-			</dl>
+			</g:uploadForm>
 			
-		</g:form>
+			<p>
+				<g:link controller="post">Back to Hubbub</g:link>	
+		    </p>
+	
 	</body>
 </html>
