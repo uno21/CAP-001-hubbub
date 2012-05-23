@@ -28,7 +28,9 @@
 				</a>
 			</div>
 			<div id="bd"><!-- start body -->
-				<nav:render group="tabs"/>
+				<h:isUserLoggedIn userId="${session.userId}"> 
+					<nav:render group="tabs"/>
+				</h:isUserLoggedIn>
 				<g:layoutBody/>
 			</div> <!-- end body  -->
 			<div id="ft">

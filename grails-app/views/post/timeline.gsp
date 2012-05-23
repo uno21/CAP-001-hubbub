@@ -1,9 +1,21 @@
 <html>
+
+<g:javascript>
+	function clearPost(e) {
+		$('postContent').value='';
+	}
+
+	function showSpinner(visible) {
+		$('spinner').style.display = visible ? "inline" : "none";
+	}
+</g:javascript>
 	<head>
 		<title>
 			Timeline for ${user.profile.fullName }
 		</title>
 		<meta name="layout" content="main"/>
+		<r:require module="jquery"/>
+		<r:layoutResources/>
 	</head>
 	<body>
 
@@ -19,11 +31,14 @@
 		</g:if>
 			
 		<p>
-			<g:form action="add_Post">
-				<g:textArea id='postContent' name="content"
-					rows="3" cols="50"/><br/>
-				<g:hiddenField name="id" value="${params.id}"/>		
-				<g:submitButton name="post" value="Post"/>
+			<g:form action="ajaxAdd">
+				<g:textArea id='postContent' name="content" rows="3" cols="50"/><br/>
+				<g:submitToRemote value="Post"
+				url="[controller: 'post', action: 'addPostAjax']"
+				update="allPosts"
+				onSucces="clearPost(e)"/>
+			<img id="spinner" style="display:none"
+				src="<g:createLinkTo dir='/images' file='spinner.gif'/>"/>	
 			</g:form>
 		</p>
 		</div>

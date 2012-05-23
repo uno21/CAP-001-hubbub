@@ -12,5 +12,12 @@ class UtilTagLib {
 			out << "' alt='${userId}'"
 			out << "' title='${userId}'"
 	}
+	
+	def isUserLoggedIn = { attrs, body ->
+		if (attrs.userId) {
+			out << body()
+		}
+		
+	}
 
 }

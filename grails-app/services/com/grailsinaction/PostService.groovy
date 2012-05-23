@@ -7,14 +7,16 @@ class PostException extends RuntimeException {
 
 class PostService {
 	
+	def userService
+	
 	boolean transactional = true
 
     Post createPost(String userId, String content) {
-		def user = User.findByUserId(userId)
+		def user = userService.findByUserId(userId)
 		if (user) {
 			def post = new Post(content: content)
-			user.addToPosts(post)	
-			if (user.save()) {
+			userService.addPost(user, post)
+			if (userService.save(user)) {
 				return post	
 			} else {
 				throw new PostException(
