@@ -15,14 +15,20 @@ class PostController {
 		[ user : user ]
 	}
 	
-	def add_Post = {
-	
-			def newPost = 
-				postService.createPost(params.id, 
-								params.content)
-			flash.message = "Added new post: ${newPost.content}"	
-		
-		redirect(action: 'timeline', id: params.id)
+	def showPosts = {
+		def user = User.findByUserId(session.userId)
+		return [user : user]
 	}
 	
+	def add = {
+		def newPost = postService.createPost(session.userId, params.content)
+		redirect(action:'showPosts')
+	}
+	
+	def addPostAjax = {
+		def newPost = postService.createPost(session.userId, params.content)
+		def user = User.findByUserId(session.userId)
+		def recentPost = Post.findAllByUser(user,[sort:'dateCreated', order: 'desc', max: 20])
+		render(template:"postentries",collection: recentPost,var:'post')	
+	}
 }

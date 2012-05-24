@@ -78,11 +78,6 @@ class UserController {
 		
 	}
 	
-	def showPosts = {
-		def user = userService.findByUserId(session.userId)
-		return [user : user]
-	}
-	
 	def showProfile = {
 		def user = userService.findByUserId(session.userId)
 		return [user : user]
@@ -97,6 +92,31 @@ class UserController {
 	def logout = {
 		session.userId = null
 		redirect(controller:"user",action:"login")
+	}
+	
+	def showPosts = {
+		redirect(controller:'post',action:'showPosts')
+	}
+	
+	def stats = {
+		User user = User.findByUserId(params.userId)
+		if (user) {
+			def sdf = new java.text.SimpleDateFormat('E')
+			def postsOnDay = [:]
+			user.posts.each { post -> 
+				def dayOfWeek = sdf.format(post.dateCreated)
+				if (postsOnDay[dayOfWeek]) {
+					postsOnDay[dayOfWeek]++
+				}  else {
+					postsOnDay[dayOfWeek] = 1
+				}
+			}
+			
+			return [userId: params.userId, postsOnDay: postsOnDay ]
+		} else {
+			flash.message = "No stats available for that user"
+			redirect(uri: "/")
+		}
 	}
 	
 }
